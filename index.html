@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Leitor Acessível</title>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  <style>
+    body { font-family: sans-serif; padding: 2rem; }
+  </style>
+</head>
+<body>
+  <h1>Áudio da Página</h1>
+  <audio id="player" controls></audio>
+
+  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+  <script type="module">
+    const site = "www.prefeituraexemplo.gov.br";
+    const page = "home";
+
+    const fetchAudio = async () => {
+      const res = await fetch(`https://YOUR-SUPABASE-URL.supabase.co/rest/v1/audios?site=eq.${site}&page=eq.${page}`, {
+        headers: {
+          "apikey": "YOUR-API-KEY",
+          "Authorization": "Bearer YOUR-API-KEY"
+        }
+      });
+      const data = await res.json();
+      const audioUrl = data[0]?.audio_url;
+
+      if (audioUrl) {
+        const player = new Plyr('#player');
+        document.getElementById("player").src = audioUrl;
+      } else {
+        alert("Áudio não encontrado.");
+      }
+    };
+
+    fetchAudio();
+  </script>
+</body>
+</html>
